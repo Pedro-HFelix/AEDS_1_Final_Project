@@ -8,4 +8,6 @@ add_executable(finalC__ main.cpp
         class/Date.cpp
         class/Person.h
         class/Person.cpp
+        class/Student.h
+        class/Student.cpp
 )

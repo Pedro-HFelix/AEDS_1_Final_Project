@@ -1,6 +1,6 @@
 # ninja log v6
 4	353	7407999663196474	CMakeFiles/finalC__.dir/main.cpp.obj	96f57b122f090de7
-2	270	7413882741376310	build.ninja	e043ebe35aa6e36f
+2	270	7414119602420894	build.ninja	e043ebe35aa6e36f
 11	372	7407991515963939	CMakeFiles/finalC__.dir/class/date.cpp.obj	e032d5d7f5891f45
 418	526	7407996547041526	finalC__.exe	3e92368fa7d4226e
 22	380	7407993144821922	CMakeFiles/finalC__.dir/class/Date.cpp.obj	f6fa0418616335a

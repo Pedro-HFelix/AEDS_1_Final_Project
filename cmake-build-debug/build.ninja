@@ -67,6 +67,12 @@ build CMakeFiles/finalC__.dir/class/Person.cpp.obj: CXX_COMPILER__finalC___unsca
   OBJECT_DIR = CMakeFiles\finalC__.dir
   OBJECT_FILE_DIR = CMakeFiles\finalC__.dir\class
 
+build CMakeFiles/finalC__.dir/class/Student.cpp.obj: CXX_COMPILER__finalC___unscanned_Debug E$:/PUC-MINAS/aeds/finalC++/class/Student.cpp || cmake_object_order_depends_target_finalC__
+  DEP_FILE = CMakeFiles\finalC__.dir\class\Student.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\finalC__.dir
+  OBJECT_FILE_DIR = CMakeFiles\finalC__.dir\class
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target finalC__
@@ -75,7 +81,7 @@ build CMakeFiles/finalC__.dir/class/Person.cpp.obj: CXX_COMPILER__finalC___unsca
 #############################################
 # Link the executable finalC__.exe
 
-build finalC__.exe: CXX_EXECUTABLE_LINKER__finalC___Debug CMakeFiles/finalC__.dir/main.cpp.obj CMakeFiles/finalC__.dir/class/Date.cpp.obj CMakeFiles/finalC__.dir/class/Person.cpp.obj
+build finalC__.exe: CXX_EXECUTABLE_LINKER__finalC___Debug CMakeFiles/finalC__.dir/main.cpp.obj CMakeFiles/finalC__.dir/class/Date.cpp.obj CMakeFiles/finalC__.dir/class/Person.cpp.obj CMakeFiles/finalC__.dir/class/Student.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\finalC__.dir

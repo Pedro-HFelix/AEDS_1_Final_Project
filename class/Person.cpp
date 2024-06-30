@@ -9,13 +9,18 @@ using namespace std;
 
 int Person::count = 0;
 
-Person::Person() {
+Person::Person() { count++; }
+
+Person::Person(string& name, Date& birthDate)
+    : name(name), birthDate(birthDate) {
     count++;
 }
 
-Person::Person(string& name, Date& birthDate) : name(name), birthDate(birthDate) {
+Person::Person(string &name, int d, int m, int y)
+    : name(name), birthDate(d, m, y) {
     count++;
 }
+
 
 Person::~Person() {
     if (count > 0) {

@@ -17,6 +17,7 @@ private:
 public:
     Person();
     Person(std::string& name, Date& birthDate);
+    Person(std::string& name, int d, int m, int y);
     ~Person();
 
     void setName(std::string& name);
