@@ -58,8 +58,7 @@ void Person::readPerson() {
 }
 
 void Person::writePerson() {
-    cout << "Name: " << getName() << endl;
-    cout << "Birth date: ";
+    writeName();
     this->birthDate.writeDate();
 }
 
@@ -71,36 +70,25 @@ int Person::getCount() {
     return count;
 }
 
-void Person::registerPerson(Person* people[], int MAX_PEOPLE) {
-    if (getCount() > MAX_PEOPLE) {
-        cout << "Cannot register more people. Maximum capacity reached." << std::endl;
-        return;
-    }
-
-    Person* newPerson = new Person();
-    newPerson->readPerson();
-    people[getCount() - 1] = newPerson;
-}
-
-void Person::listAllPersons(Person* people[], int qtdPersons) {
-    if (qtdPersons == 0) {
+void Person::listAllPersons(Person* people[]) {
+    if (count == 0) {
         cout << "No people registered." << endl;
         return;
     }
 
     cout << "List of registered people:" << endl;
-    for (int i = 0; i < qtdPersons; ++i) {
+    for (int i = 0; i < count; ++i) {
         cout << "Person " << (i + 1) << ":" << endl;
         people[i]->writePerson();
     }
 }
 
-void Person::showBirthdaysForMonth(Person* people[], int qtdPersons, int month) {
+void Person::showBirthdaysForMonth(Person* people[], int month) {
     bool found = false;
     cout << "People with birthdays in month " << month << ":" << endl;
 
     for (int i = 0; i < count; ++i) {
-        if (people[i]->getBirthDate().getMonth() == month) {
+        if (people[i]->birthDate.isSameMonth(month)) {
             people[i]->writePerson();
             found = true;
         }
@@ -108,5 +96,17 @@ void Person::showBirthdaysForMonth(Person* people[], int qtdPersons, int month) 
 
     if (!found) {
         cout << "No birthdays found in month " << month << "." << endl;
+    }
+}
+
+void Person::showBirthdaysForMonthAllTypes(Person* people[], int month) {
+    cout << "Birthdays in month " << month << ":\n";
+
+    for (int i = 0; i < getCount(); ++i) {
+        if (people[i]->birthDate.isSameMonth(month)) {
+            cout << "People: "<< i + 1 << endl;
+            people[i]->writeData();
+            cout << "\n"<< endl;
+        }
     }
 }

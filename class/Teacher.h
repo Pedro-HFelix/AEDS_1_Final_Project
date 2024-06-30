@@ -22,10 +22,12 @@ public:
     void setTitle(string title);
     string getTitle();
 
-    void readTeacher();
-    void writeTeacher();
+    void writeData() override;
+    void readData() override;
 
+    static void registerTeacher(Teacher* Teachers[], int MAX_PEOPLE, Person* persons[]);
     static int getTeacherCount();
+    static void listAllTeachers(Teacher* teachers[]);
 };
 
 

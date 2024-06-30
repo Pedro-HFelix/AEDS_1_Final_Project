@@ -55,9 +55,11 @@ void Date::readDate() {
 }
 
 void Date::writeDate() {
+    cout << "Birth date: ";
     cout << this->day << "/" << this->month << "/" << this->year << endl;
 }
 
 bool Date::isSameMonth(int m) {
-
+    return month == m;
 }
+

@@ -27,25 +27,50 @@ Student::~Student() {
 }
 
 void Student::setEnrolment(string enrolment) {
-    this->enrolment = std::move(enrolment);
+    this->enrolment = enrolment;
 }
 
 string Student::getEnrolment() {
     return this->enrolment;
 }
 
-void Student::readStudent() {
+int Student::getStudentCount() {
+    return studentCount;
+}
+
+void Student::writeData() {
+    writePerson();
+    cout << "Enrollment Number: " << enrolment << endl;
+}
+
+void Student::readData() {
     readPerson();
     cout << "Enter the enrollment number: ";
+    cin.ignore();
     getline(cin, enrolment);
 }
 
-void Student::writeStudent() {
-    writePerson();
-    cout << "Enrollment Number: " << enrolment << endl;
+void Student::registerStudent(Student *students[], int MAX_PEOPLE, Person* persons[]) {
+    if (Person::getCount() > MAX_PEOPLE) {
+        cout << "Cannot register more people. Maximum capacity reached." << endl;
+        return;
+    }
 
+    Student* student = new Student();
+    student->readData();
+    students[studentCount-1] = student;
+    persons[Person::getCount() - 1] = student;
 }
 
-int Student::getStudentCount() {
-    return studentCount;
+void Student::listAllStudents(Student* students[]) {
+    if(studentCount == 0) {
+        cout << "No student registered." << endl;
+        return;
+    }
+
+    cout << "List of registered students:" << endl;
+    for (int i = 0; i < studentCount; ++i) {
+        cout << "Student " << (i + 1) << ":" << endl;
+        students[i]->writeData();
+    }
 }

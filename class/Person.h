@@ -25,18 +25,22 @@ public:
     ~Person();
 
     void setName(string name);
-    string getName();
     void readName();
-    void writeName();
     void readPerson();
-    void writePerson();
+
+    string getName();
     Date getBirthDate();
+    void writeName();
+    void writePerson();
 
     static int getCount();
-    static void registerPerson(Person* people[], int MAX_PEOPLE);
-    static void listAllPersons(Person* people[], int qtdPersons);
-    static void showBirthdaysForMonth(Person* people[], int qtdPersons ,int month);
+    static void listAllPersons(Person* people[]);
+    static void showBirthdaysForMonth(Person* people[], int month);
 
+    static void showBirthdaysForMonthAllTypes(Person* people[], int month);
+
+    virtual void writeData() = 0;
+    virtual void readData() = 0;
 };
 
 

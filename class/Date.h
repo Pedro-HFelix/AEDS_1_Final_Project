@@ -19,13 +19,16 @@ public:
     void setDay(int d);
     void setMonth(int m);
     void setYear(int y);
+    void setDate(int d, int m, int y);
+
     int getDay();
     int getMonth();
     int getYear();
-    void setDate(int d, int m, int y);
-    bool isValid();
+
     void readDate();
     void writeDate();
+
+    bool isValid();
     bool isSameMonth(int m);
 };
 

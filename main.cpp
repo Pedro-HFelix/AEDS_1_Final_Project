@@ -1,8 +1,8 @@
 #include <iostream>
 #include "class/Person.h"
 #include "class/Student.h"
+#include "class/Teacher.h"
 
-//#define MAX_PEOPLE 1000
 #define MAX_PEOPLE 1000
 
 using namespace std;
@@ -11,13 +11,15 @@ int menu() {
     int choice;
     cout << "Select an option:" << endl;
     cout << "0 - Exit" << endl;
-    cout << "1 - Register a person" << endl;
-    cout << "2 - List registered people" << endl;
-    cout << "3 - List birthdays for the month" << endl;
+    cout << "1 - Register student" << endl;
+    cout << "2 - Register teacher" << endl;
+    cout << "3 - List registered student " << endl;
+    cout << "4 - List registered teacher" << endl;
+    cout << "5 - List birthdays for the month" << endl;
     cout << "Enter your choice: ";
     cin >> choice;
 
-    while (choice < 0 || choice > 3) {
+    while (choice < 0 || choice > 5) {
         cout << "Invalid option. Please try again: ";
         cin >> choice;
     }
@@ -26,7 +28,10 @@ int menu() {
 
 int main() {
 
-    Person* peoples[MAX_PEOPLE];
+    Student* students[MAX_PEOPLE];
+    Teacher* teachers[MAX_PEOPLE];
+    Person* persons[MAX_PEOPLE];
+
     int choice;
     int month;
 
@@ -38,16 +43,22 @@ int main() {
                 cout << "Exiting..." << endl;
                 break;
             case 1:
-                Person::registerPerson(peoples, MAX_PEOPLE);
+                Student::registerStudent(students, MAX_PEOPLE, persons);
                 break;
             case 2:
-                Person::listAllPersons(peoples, Person::getCount());
+                Teacher::registerTeacher(teachers, MAX_PEOPLE, persons);
                 break;
             case 3:
+                Student::listAllStudents(students);
+                break;
+            case 4:
+                Teacher::listAllTeachers(teachers);
+                break;
+            case 5:
                 cout << "Enter the month to list birthdays: ";
                 cin >> month;
                 if (month >= 1 && month <= 12) {
-                    Person::showBirthdaysForMonth(peoples, Person::getCount(), month);
+                    Person::showBirthdaysForMonthAllTypes(persons, month);
                 } else {
                     cout << "Invalid month. Please enter a number between 1 and 12." << endl;
                 }
@@ -58,9 +69,6 @@ int main() {
         }
     } while (choice != 0);
 
-    for (int i = 0; i < Person::getCount(); ++i) {
-        delete peoples[i];
-    }
 
     return 0;
 }

@@ -21,11 +21,16 @@ public:
     ~Student();
 
     void setEnrolment  (string enrolment);
+
     string getEnrolment();
-    void readStudent();
-    void writeStudent();
+
+
+    void writeData() override;
+    void readData() override;
 
     static int getStudentCount();
+    static void registerStudent(Student* students[], int MAX_PEOPLE, Person* persons[]);
+    static void listAllStudents(Student* students[]);
 };
 
 
