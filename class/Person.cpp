@@ -4,6 +4,7 @@
 
 #include "Person.h"
 #include <iostream>
+#include <utility>
 
 using namespace std;
 
@@ -11,16 +12,15 @@ int Person::count = 0;
 
 Person::Person() { count++; }
 
-Person::Person(string& name, Date& birthDate)
+Person::Person(string name, Date birthDate)
     : name(name), birthDate(birthDate) {
     count++;
 }
 
-Person::Person(string &name, int d, int m, int y)
+Person::Person(string name, int d, int m, int y)
     : name(name), birthDate(d, m, y) {
     count++;
 }
-
 
 Person::~Person() {
     if (count > 0) {
@@ -28,38 +28,43 @@ Person::~Person() {
     }
 }
 
-void Person::setName(string& name) {
-    this->name = name;
+void Person::setName(string name) {
+    this->name = std::move(name);
 }
 
 string Person::getName() {
-    return name;
+    return this->name;
 }
 
 void Person::readName() {
     cout << "Enter name: ";
-    cin.ignore(); // Ignore the previous newline character
+    cin.ignore();
+
+    string name;
     getline(cin, name);
+
+    setName(name);
+
 }
 
 void Person::writeName() {
-    cout << "Name: " << name << endl;
+    cout << "Name: " << getName() << endl;
 }
 
 void Person::readPerson() {
     readName();
     cout << "Enter birth date:" << endl;
-    birthDate.readDate();
+    this->birthDate.readDate();
 }
 
 void Person::writePerson() {
-    cout << "Name: " << name << endl;
+    cout << "Name: " << getName() << endl;
     cout << "Birth date: ";
-    birthDate.writeDate();
+    this->birthDate.writeDate();
 }
 
 Date Person::getBirthDate() {
-    return birthDate;
+    return this->birthDate;
 }
 
 int Person::getCount() {
@@ -67,14 +72,14 @@ int Person::getCount() {
 }
 
 void Person::registerPerson(Person* people[], int MAX_PEOPLE) {
-    if (Person::getCount() > MAX_PEOPLE) {
+    if (getCount() > MAX_PEOPLE) {
         cout << "Cannot register more people. Maximum capacity reached." << std::endl;
         return;
     }
 
     Person* newPerson = new Person();
     newPerson->readPerson();
-    people[Person::getCount() - 1] = newPerson;
+    people[getCount() - 1] = newPerson;
 }
 
 void Person::listAllPersons(Person* people[], int qtdPersons) {

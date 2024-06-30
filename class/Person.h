@@ -5,23 +5,27 @@
 #ifndef FINALC___PERSON_H
 #define FINALC___PERSON_H
 
-#include "Date.h"
 #include <string>
+
+#include "Date.h"
+
+using namespace std;
 
 class Person {
 private:
-    std::string name;
+    string name;
     Date birthDate;
     static int count;
 
 public:
     Person();
-    Person(std::string& name, Date& birthDate);
-    Person(std::string& name, int d, int m, int y);
+    Person(string name, Date birthDate);
+    Person(string name, int d, int m, int y);
+
     ~Person();
 
-    void setName(std::string& name);
-    std::string getName();
+    void setName(string name);
+    string getName();
     void readName();
     void writeName();
     void readPerson();

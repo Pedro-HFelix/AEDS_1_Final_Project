@@ -1,8 +1,9 @@
 #include <iostream>
 #include "class/Person.h"
+#include "class/Student.h"
 
 //#define MAX_PEOPLE 1000
-#define MAX_PEOPLE 2
+#define MAX_PEOPLE 1000
 
 using namespace std;
 
@@ -24,7 +25,8 @@ int menu() {
 }
 
 int main() {
-    Person* people[MAX_PEOPLE] = { nullptr };
+
+    Person* peoples[MAX_PEOPLE];
     int choice;
     int month;
 
@@ -36,16 +38,16 @@ int main() {
                 cout << "Exiting..." << endl;
                 break;
             case 1:
-                Person::registerPerson(people, MAX_PEOPLE);
+                Person::registerPerson(peoples, MAX_PEOPLE);
                 break;
             case 2:
-                Person::listAllPersons(people, Person::getCount());
+                Person::listAllPersons(peoples, Person::getCount());
                 break;
             case 3:
                 cout << "Enter the month to list birthdays: ";
                 cin >> month;
                 if (month >= 1 && month <= 12) {
-                    Person::showBirthdaysForMonth(people, Person::getCount(), month);
+                    Person::showBirthdaysForMonth(peoples, Person::getCount(), month);
                 } else {
                     cout << "Invalid month. Please enter a number between 1 and 12." << endl;
                 }
@@ -57,7 +59,7 @@ int main() {
     } while (choice != 0);
 
     for (int i = 0; i < Person::getCount(); ++i) {
-        delete people[i];
+        delete peoples[i];
     }
 
     return 0;

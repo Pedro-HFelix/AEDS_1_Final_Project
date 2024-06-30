@@ -17,10 +17,10 @@ private:
 
 public:
     Student();
-    Student( string& name, int& d, int& m, int& y, string& enrolment);
+    Student(string name, int d, int m, int y, string enrolment);
     ~Student();
 
-    void setEnrolment  (string& enrolment);
+    void setEnrolment  (string enrolment);
     string getEnrolment();
     void readStudent();
     void writeStudent();

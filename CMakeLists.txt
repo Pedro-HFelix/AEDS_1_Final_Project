@@ -10,4 +10,6 @@ add_executable(finalC__ main.cpp
         class/Person.cpp
         class/Student.h
         class/Student.cpp
+        class/Teacher.cpp
+        class/Teacher.h
 )

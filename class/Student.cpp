@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <utility>
 #include "Student.h"
 #include "Person.h"
 
@@ -11,10 +12,11 @@ using namespace std;
 int Student::studentCount = 0;
 
 
-Student::Student(string &name, int &d, int &m, int &y, string &enrolment)
- : Person(name,d, m, y), enrolment(enrolment) {
+Student::Student(string name, int d, int m, int y, string enrolment)
+ : Person(name, d, m, y), enrolment(enrolment) {
     ++studentCount;
 }
+
 
 Student::Student() {
     ++studentCount;
@@ -24,8 +26,8 @@ Student::~Student() {
     --studentCount;
 }
 
-void Student::setEnrolment(string &enrolment) {
-    this->enrolment = enrolment;
+void Student::setEnrolment(string enrolment) {
+    this->enrolment = std::move(enrolment);
 }
 
 string Student::getEnrolment() {
@@ -33,13 +35,13 @@ string Student::getEnrolment() {
 }
 
 void Student::readStudent() {
-    Person::readPerson();
+    readPerson();
     cout << "Enter the enrollment number: ";
     getline(cin, enrolment);
 }
 
 void Student::writeStudent() {
-    Person::writePerson();
+    writePerson();
     cout << "Enrollment Number: " << enrolment << endl;
 
 }

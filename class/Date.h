@@ -26,6 +26,7 @@ public:
     bool isValid();
     void readDate();
     void writeDate();
+    bool isSameMonth(int m);
 };
 
 
