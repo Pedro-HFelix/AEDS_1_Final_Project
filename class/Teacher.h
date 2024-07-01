@@ -6,20 +6,20 @@
 #define TEACHER_H
 #include "Person.h"
 
-
 using namespace std;
-class Teacher: public Person{
 
-private:
+class Teacher final : public Person{
     string title;
     static int teacherCount;
 
 public:
     Teacher();
     Teacher(string name, int day, int month, int year, string title);
-    ~Teacher();
+
+    ~Teacher() override;
 
     void setTitle(string title);
+
     string getTitle();
 
     void writeData() override;
@@ -29,7 +29,5 @@ public:
     static int getTeacherCount();
     static void listAllTeachers(Teacher* teachers[]);
 };
-
-
 
 #endif //TEACHER_H

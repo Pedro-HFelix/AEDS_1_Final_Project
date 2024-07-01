@@ -27,9 +27,11 @@ int menu() {
 }
 
 int main() {
-
+    // ReSharper disable once CppTooWideScope
     Student* students[MAX_PEOPLE];
+    // ReSharper disable once CppTooWideScope
     Teacher* teachers[MAX_PEOPLE];
+    // ReSharper disable once CppTooWideScope
     Person* persons[MAX_PEOPLE];
 
     int choice;
@@ -58,7 +60,7 @@ int main() {
                 cout << "Enter the month to list birthdays: ";
                 cin >> month;
                 if (month >= 1 && month <= 12) {
-                    Person::showBirthdaysForMonthAllTypes(persons, month);
+                    Person::showBirthdaysForMonth(persons, month);
                 } else {
                     cout << "Invalid month. Please enter a number between 1 and 12." << endl;
                 }

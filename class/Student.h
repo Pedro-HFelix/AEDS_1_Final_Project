@@ -2,23 +2,23 @@
 // Created by user on 29/06/2024.
 //
 
-#ifndef FINALC___STUDENT_H
-#define FINALC___STUDENT_H
+#ifndef FINALC_STUDENT_H
+#define FINALC_STUDENT_H
 
 
 #include "Person.h"
 
 using namespace std;
 
-class Student : public Person{
-private:
+class Student final : public Person{
     string enrolment;
     static int studentCount;
 
 public:
     Student();
     Student(string name, int d, int m, int y, string enrolment);
-    ~Student();
+
+    ~Student() override;
 
     void setEnrolment  (string enrolment);
 
@@ -34,4 +34,4 @@ public:
 };
 
 
-#endif //FINALC___STUDENT_H
+#endif //FINALC_STUDENT_H

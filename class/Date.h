@@ -2,12 +2,10 @@
 // Created by user on 22/06/2024.
 //
 
-#ifndef FINALC___DATE_H
-#define FINALC___DATE_H
+#ifndef FINALC_DATE_H
+#define FINALC_DATE_H
 
 class Date {
-public:
-private:
     int day;
     int month;
     int year;
@@ -21,16 +19,16 @@ public:
     void setYear(int y);
     void setDate(int d, int m, int y);
 
-    int getDay();
-    int getMonth();
-    int getYear();
+    [[nodiscard]] int getDay() const;
+    [[nodiscard]] int getMonth() const;
+    [[nodiscard]] int getYear() const;
 
     void readDate();
-    void writeDate();
+    void writeDate() const;
 
-    bool isValid();
-    bool isSameMonth(int m);
+    [[nodiscard]] bool isValid() const;
+    [[nodiscard]] bool isSameMonth(int m) const;
 };
 
 
-#endif //FINALC___DATE_H
+#endif //FINALC_DATE_H
