@@ -39,6 +39,10 @@ Teacher::Teacher(string name, const int day, const int month, const int year, st
     ++teacherCount;
 }
 
+Teacher::~Teacher() {
+    if(teacherCount > 0) --teacherCount;
+}
+
 /**
  * @brief Sets the title of the teacher.
  *
@@ -192,11 +196,9 @@ void Teacher::deleteTeacher(Teacher *teachers[]) {
 
     delete teachers[index];
 
-    for (int i = index; i < teacherCount - 1; ++i) {
+    for (int i = index; i < teacherCount; ++i) {
         teachers[i] = teachers[i + 1];
     }
-
-    teacherCount--;
 
     teachers[teacherCount] = nullptr;
     cout << "Teacher at position " << position << " deleted successfully." << endl;
@@ -243,4 +245,3 @@ void Teacher::editTeacherAtUserInputPosition(Teacher* teachers[]) {
 int Teacher::getTeacherCount() {
    return teacherCount;
 }
-

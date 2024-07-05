@@ -24,9 +24,14 @@ int Student::studentCount = 0;
  *
  * This constructor increments the student count.
  */
-Student::Student(string name, const int d, const int m, const int y, string enrolment)
+Student::Student(   string name, const int d, const int m, const int y, string enrolment)
  : Person(move(name), d, m, y), enrolment(move(enrolment)) {
     ++studentCount;
+}
+
+
+Student::~Student() {
+    if(studentCount > 0) --studentCount;
 }
 
 /**
@@ -174,11 +179,9 @@ void Student::deleteStudent(Student* students[]) {
 
     delete students[index];
 
-    for (int i = index; i < studentCount - 1; ++i) {
+    for (int i = index; i < studentCount; ++i) {
         students[i] = students[i + 1];
     }
-
-    studentCount--;
 
     students[studentCount] = nullptr;
     cout << "Student at position " << position << " deleted successfully." << endl;
@@ -200,9 +203,9 @@ void Student::editStudentAtUserInputPosition(Student* students[]) {
     }
 
     int position;
-    const int continueLoop = false;
+    bool continueLoop = true;
 
-    while (true) {
+    while (continueLoop) {
         cout << "Enter the position of the student to edit (1 to " << studentCount << "): ";
         cin >> position;
 
@@ -211,7 +214,7 @@ void Student::editStudentAtUserInputPosition(Student* students[]) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         } else {
-            break;
+            continueLoop = false;
         }
     }
 

@@ -30,6 +30,10 @@ Person::Person(string name, const int d, const int m, const int y)
     count++;
 }
 
+Person::~Person() {
+    if(count > 0) --count;
+}
+
 /**
  * @brief Sets the name of the person.
  *
@@ -190,11 +194,10 @@ void Person::deletePersonAtPosition(Person* peoples[]) {
 
     delete peoples[index];
 
-    for (int i = index; i < count - 1; ++i) {
+    for (int i = index; i < count; ++i) {
         peoples[i] = peoples[i + 1];
     }
 
-    count--;
     peoples[count] = nullptr;
     cout << "Person at position " << position << " deleted successfully." << endl;
 }

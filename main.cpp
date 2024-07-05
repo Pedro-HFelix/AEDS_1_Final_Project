@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+
 #include "class/Person.h"
 #include "class/Student.h"
 #include "class/Teacher.h"
@@ -23,13 +25,13 @@ void writeStudentFile(Student* students[]) {
     fclose(studentsFile);
 }
 
-void appendTeacherFile(Teacher* teacher) {
+void appendTeacherFile(const Teacher* teacher) {
     FILE* teachersFile = fopen("teachers.dat", "ab");
     fwrite(teacher, sizeof(Teacher), 1, teachersFile);
     fclose(teachersFile);
 }
 
-void appendStudentFile(Student* student) {
+void appendStudentFile(const Student* student) {
     FILE* studentsFile = fopen("students.dat", "ab");
     fwrite(student, sizeof(Student), 1, studentsFile);
     fclose(studentsFile);
@@ -94,9 +96,10 @@ int menu() {
 }
 
 int main() {
+
     try {
-        FILE* studentsFile = fopen("students.dat", "rb+");
-        FILE* teachersFile = fopen("teachers.dat", "rb+");
+        FILE* teachersFile = fopen("teachers.dat", "rb");
+        FILE* studentsFile = fopen("students.dat", "rb");
 
         if (!studentsFile || !teachersFile) {
             throw runtime_error("Error to read file");
@@ -107,24 +110,64 @@ int main() {
         Person* persons[MAX_PEOPLE] = { nullptr };
 
         int studentIndex = 0;
-        while (studentIndex < MAX_PEOPLE) {
-            students[studentIndex] = new Student;
-            if (fread(students[studentIndex], sizeof(Student), 1, studentsFile) != 1) {
-                students[studentIndex]->writePerson();
-                if (feof(studentsFile)) break;
-                else throw runtime_error("Error reading students.dat");
+        int teacherIndex = 0;
+        bool continueLoop = true;
+
+        vector<Student> studentsVector;
+        vector<Teacher> teachersVector;
+
+        while (studentIndex < MAX_PEOPLE && continueLoop) {
+            if (!feof(studentsFile)) {
+                Student tempStudent;
+                size_t bytesRead = fread(&tempStudent, sizeof(Student), 1, studentsFile);
+
+                if (bytesRead == 1) {
+                    if (!tempStudent.getName().empty()) {
+                        studentsVector.push_back(tempStudent);
+                    }
+                }
+            } else {
+                continueLoop = false;
             }
+
             studentIndex++;
         }
 
-        int teacherIndex = 0;
-        while (teacherIndex < MAX_PEOPLE) {
-            teachers[teacherIndex] = new Teacher;
-            if (fread(teachers[teacherIndex], sizeof(Teacher), 1, teachersFile) != 1) {
-                if (feof(teachersFile)) break;
-                else throw runtime_error("Error reading teachers.dat");
+        continueLoop = true;
+        while (studentIndex < MAX_PEOPLE && continueLoop && teacherIndex < MAX_PEOPLE) {
+            if (!feof(teachersFile)) {
+                Teacher tempTeacher;
+                size_t bytesRead = fread(&tempTeacher, sizeof(Teacher), 1, teachersFile);
+
+                if (bytesRead == 1) {
+                    if (!tempTeacher.getName().empty()) {
+                        teachersVector.push_back(tempTeacher);
+                    }
+                }
+            } else {
+                continueLoop = false;
             }
             teacherIndex++;
+        }
+
+        for (size_t i = 0; i < studentsVector.size(); ++i) {
+            students[i] = new Student(
+                studentsVector[i].getName(),
+                studentsVector[i].getBirthDate().getDay(),
+                studentsVector[i].getBirthDate().getMonth(),
+                studentsVector[i].getBirthDate().getYear(),
+                studentsVector[i].getEnrolment()
+            );
+        }
+
+        for (size_t i = 0; i < teachersVector.size(); ++i) {
+            teachers[i] = new Teacher(
+                teachersVector[i].getName(),
+                teachersVector[i].getBirthDate().getDay(),
+                teachersVector[i].getBirthDate().getMonth(),
+                teachersVector[i].getBirthDate().getYear(),
+                teachersVector[i].getTitle()
+            );
         }
 
         fclose(studentsFile);
@@ -142,6 +185,7 @@ int main() {
                     break;
                 case 11:
                     Student::registerStudent(students, MAX_PEOPLE, persons);
+                    cout << Student::getStudentsCount() << endl;
                     appendStudentFile(students[Student::getStudentsCount() - 1]);
                     break;
                 case 12:
@@ -187,13 +231,12 @@ int main() {
                     break;
             }
         } while (choice != 0);
-    } catch (const bad_alloc& e) {
+    } catch (const bad_alloc& ) {
         cerr << "Memory allocation failed" << endl;
     } catch (const runtime_error& e) {
         cerr << "An error occurred: " << e.what() << endl;
     } catch (const exception& e) {
         cerr << "An error occurred: " << e.what() << endl;
     }
-
     return 0;
 }

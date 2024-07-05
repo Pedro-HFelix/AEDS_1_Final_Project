@@ -19,6 +19,8 @@ public:
     Person();
     Person(string name, int d, int m, int y);
 
+    virtual ~Person();
+
     void setName(string name);
 
     string getName();

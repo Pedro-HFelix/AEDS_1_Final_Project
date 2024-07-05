@@ -18,6 +18,8 @@ class Student final : public Person{
 public:
     Student();
     Student(string name, int d, int m, int y, string enrolment);
+    Student(Student* student);
+    ~Student();
 
     void setEnrolment  (string enrolment);
 

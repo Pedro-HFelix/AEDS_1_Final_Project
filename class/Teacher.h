@@ -15,7 +15,8 @@ class Teacher final : public Person{
 public:
     Teacher();
     Teacher(string name, int day, int month, int year, string title);
-    
+    ~Teacher();
+
     void setTitle(string title);
 
     string getTitle();
