@@ -37,13 +37,6 @@ Student::Student() {
 }
 
 /**
- * @brief Destructor that decrements the student count.
- */
-Student::~Student() {
-    --studentCount;
-}
-
-/**
  * @brief Sets the enrolment number of the student.
  *
  * @param enrolment The new enrolment number (string).
@@ -66,7 +59,7 @@ string Student::getEnrolment() {
  *
  * @return The count of Student objects (integer).
  */
-int Student::getStudentCount() {
+int Student::getCount() {
     return studentCount;
 }
 
@@ -76,7 +69,6 @@ int Student::getStudentCount() {
  * This includes the person's details and the enrolment number.
  */
 void Student::writeData() {
-    writePerson();
     cout << "Enrollment Number: " << enrolment << endl;
 }
 
@@ -88,8 +80,22 @@ void Student::writeData() {
 void Student::readData() {
     readPerson();
     cout << "Enter the enrollment number: ";
-    cin.ignore();  // Ignore the newline left by previous input
-    getline(cin, enrolment);
+    cin.ignore();
+
+    string enrolment;
+    bool continueLoop = true;
+
+    while(continueLoop) {
+        getline(cin, enrolment);
+
+        if(enrolment.empty()) {
+            cout << "Title cannot be empty. Please enter a valid title." << endl;
+            continue;
+        }
+        continueLoop = false;
+    }
+
+    setEnrolment(enrolment);
 }
 
 /**
@@ -102,7 +108,9 @@ void Student::readData() {
  * This function reads the student details from input and registers the student if the maximum capacity is not reached.
  */
 void Student::registerStudent(Student *students[], const int MAX_PEOPLE, Person* persons[]) {
-    if (getCount() > MAX_PEOPLE) {
+    const int countPeople = getPersonCount();
+
+    if (countPeople > MAX_PEOPLE) {
         cout << "Cannot register more people. Maximum capacity reached." << endl;
         return;
     }
@@ -110,7 +118,7 @@ void Student::registerStudent(Student *students[], const int MAX_PEOPLE, Person*
     auto* student = new Student();
     student->readData();
     students[studentCount - 1] = student;
-    persons[getCount() - 1] = student;
+    persons[countPeople - 1] = student;
 }
 
 /**
@@ -129,6 +137,92 @@ void Student::listAllStudents(Student* students[]) {
     cout << "List of registered students:" << endl;
     for (int i = 0; i < studentCount; ++i) {
         cout << "Student " << i + 1 << ":" << endl;
-        students[i]->writeData();
+        students[i]->writePerson();
     }
 }
+
+/**
+ * @brief Deletes a student at a specified position.
+ *
+ * @param students An array of pointers to Student objects.
+ *
+ * This method deletes the person at the specified position and shifts the remaining elements.
+ */
+void Student::deleteStudent(Student* students[]) {
+    if (studentCount == 0) {
+        cout << "No students available to delete." << endl;
+        return;
+    }
+
+    int position;
+    bool continueLoop = true;
+
+    while (continueLoop) {
+        cout << "Enter the position of the person to delete (1 to " << studentCount << "): ";
+        cin >> position;
+
+        if (cin.fail() || position < 1 || position > studentCount) {
+            cout << "Invalid position. Please enter a number between 1 and " << studentCount << "." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } else {
+            continueLoop = false;
+        }
+    }
+
+    const int index = position - 1;
+
+    delete students[index];
+
+    for (int i = index; i < studentCount - 1; ++i) {
+        students[i] = students[i + 1];
+    }
+
+    studentCount--;
+
+    students[studentCount] = nullptr;
+    cout << "Student at position " << position << " deleted successfully." << endl;
+}
+
+/**
+ * @brief Edits the details of a `Student` object at a user-specified position.
+ *
+ * This method prompts the user to enter the position of the `Student` object to edit,
+ * validates the position, and then calls `readPerson` on the selected object to allow
+ * editing of its details.
+ *
+ * @param students An array of pointers to `Student` objects.
+ */
+void Student::editStudentAtUserInputPosition(Student* students[]) {
+    if (studentCount == 0) {
+        cout << "No students available to edit." << endl;
+        return;
+    }
+
+    int position;
+    const int continueLoop = false;
+
+    while (true) {
+        cout << "Enter the position of the student to edit (1 to " << studentCount << "): ";
+        cin >> position;
+
+        if (cin.fail() || position < 1 || position > studentCount) {
+            cout << "Invalid position. Please enter a number between 1 and " << studentCount << "." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } else {
+            break;
+        }
+    }
+
+    const int index = position - 1;
+
+    cout << "Editing student at position " << position << ":" << endl;
+    students[index]->readData();
+    cout << "Student details updated successfully." << endl;
+}
+
+int Student::getStudentsCount() {
+    return studentCount;
+}
+

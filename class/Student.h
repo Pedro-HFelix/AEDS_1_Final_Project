@@ -2,6 +2,7 @@
 // Created by user on 29/06/2024.
 //
 
+// ReSharper disable CppPolymorphicClassWithNonVirtualPublicDestructor
 #ifndef FINALC_STUDENT_H
 #define FINALC_STUDENT_H
 
@@ -18,8 +19,6 @@ public:
     Student();
     Student(string name, int d, int m, int y, string enrolment);
 
-    ~Student() override;
-
     void setEnrolment  (string enrolment);
 
     string getEnrolment();
@@ -27,10 +26,13 @@ public:
 
     void writeData() override;
     void readData() override;
+    int getCount() override;
 
-    static int getStudentCount();
     static void registerStudent(Student* students[], int MAX_PEOPLE, Person* persons[]);
     static void listAllStudents(Student* students[]);
+    static void deleteStudent(Student* students[]);
+    static void editStudentAtUserInputPosition(Student* students[]);
+    static int getStudentsCount();
 };
 
 

@@ -17,10 +17,7 @@ class Person {
 
 public:
     Person();
-    Person(string name, Date birthDate);
     Person(string name, int d, int m, int y);
-
-    virtual ~Person();
 
     void setName(string name);
 
@@ -33,10 +30,13 @@ public:
     void writeName();
     void writePerson();
 
-    static int getCount();
     static void listAllPersons(Person* peoples[]);
     static void showBirthdaysForMonth(Person* peoples[], int month);
+    static void deletePersonAtPosition(Person *peoples[]);
+    static void editPersonAtUserInputPosition(Person* peoples[]);
+    static int getPersonCount();
 
+    virtual int getCount() = 0;
     virtual void writeData() = 0;
     virtual void readData() = 0;
 };

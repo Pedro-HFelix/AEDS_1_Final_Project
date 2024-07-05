@@ -18,17 +18,6 @@ int Person::count = 0;
 Person::Person() { count++; }
 
 /**
- * @brief Constructor that initializes the Person object with a name and birth date.
- *
- * @param name The name of the person (string).
- * @param birthDate The birth date of the person (Date object).
- */
-Person::Person(string name, const Date birthDate)
-    : name(move(name)), birthDate(birthDate) {
-    count++;
-}
-
-/**
  * @brief Constructor that initializes the Person object with a name and a birth date from separate day, month, and year parameters.
  *
  * @param name The name of the person (string).
@@ -39,15 +28,6 @@ Person::Person(string name, const Date birthDate)
 Person::Person(string name, const int d, const int m, const int y)
     : name(move(name)), birthDate(d, m, y) {
     count++;
-}
-
-/**
- * @brief Destructor that decrements the count of Person objects.
- */
-Person::~Person() {
-    if (count > 0) {
-        count--;
-    }
 }
 
 /**
@@ -78,7 +58,17 @@ void Person::readName() {
     cin.ignore();
 
     string name;
-    getline(cin, name);
+    bool continueLoop = true;
+
+    while (continueLoop) {
+        getline(cin, name);
+
+        if (name.empty()) {
+            cout << "Name cannot be empty. Please enter a valid title." << endl;
+            continue;
+        }
+        continueLoop = false;
+    }
 
     setName(name);
 }
@@ -109,6 +99,7 @@ void Person::readPerson() {
 void Person::writePerson() {
     writeName();
     this->birthDate.writeDate();
+    writeData();
 }
 
 /**
@@ -118,15 +109,6 @@ void Person::writePerson() {
  */
 Date Person::getBirthDate() const {
     return this->birthDate;
-}
-
-/**
- * @brief Gets the current count of Person objects.
- *
- * @return The count of Person objects (integer).
- */
-int Person::getCount() {
-    return count;
 }
 
 /**
@@ -162,7 +144,7 @@ void Person::showBirthdaysForMonth(Person* peoples[], const int month) {
 
     cout << "People with birthdays in month " << month << ":" << endl;
 
-    for (int i = 0; i < getCount(); ++i) {
+    for (int i = 0; i < count; ++i) {
         if (peoples[i]->birthDate.isSameMonth(month)) {
             cout << "Person " << i + 1 << ":" << endl;
             peoples[i]->writePerson();
@@ -174,4 +156,92 @@ void Person::showBirthdaysForMonth(Person* peoples[], const int month) {
     if (!found) {
         cout << "No birthdays found in month " << month << "." << endl;
     }
+}
+
+/**
+ * @brief Deletes a person at a specified position.
+ *
+ * @param peoples An array of pointers to Person objects.
+ * This method deletes the person at the specified position and shifts the remaining elements.
+ */
+void Person::deletePersonAtPosition(Person* peoples[]) {
+    if (count == 0) {
+        cout << "No persons available to delete." << endl;
+        return;
+    }
+
+    int position;
+    bool continueLoop = true;
+
+    while (continueLoop) {
+        cout << "Enter the position of the person to delete (1 to " << count << "): ";
+        cin >> position;
+
+        if (cin.fail() || position < 1 || position > count) {
+            cout << "Invalid position. Please enter a number between 1 and " << count << "." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } else {
+            continueLoop = false;
+        }
+    }
+
+    const int index = position - 1;
+
+    delete peoples[index];
+
+    for (int i = index; i < count - 1; ++i) {
+        peoples[i] = peoples[i + 1];
+    }
+
+    count--;
+    peoples[count] = nullptr;
+    cout << "Person at position " << position << " deleted successfully." << endl;
+}
+
+/**
+ * @brief Edits the details of a `Person` object at a user-specified position.
+ *
+ * This method prompts the user to enter the position of the `Person` object to edit,
+ * validates the position, and then calls `readPerson` on the selected object to allow
+ * editing of its details.
+ *
+ * @param peoples An array of pointers to `Person` objects.
+ */
+void Person::editPersonAtUserInputPosition(Person *peoples[]) {
+    if (count == 0) {
+        cout << "No persons available to edit." << endl;
+        return;
+    }
+
+    int position;
+    bool continueLoop = true;
+
+    while (continueLoop) {
+        cout << "Enter the position of the person to edit (1 to " << count << "): ";
+        cin >> position;
+
+        if (cin.fail() || position < 1 || position > count) {
+            cout << "Invalid position. Please enter a number between 1 and " << count << "." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } else {
+            continueLoop = false;
+        }
+    }
+
+    const int index = position - 1;
+
+    cout << "Editing person at position " << position << ":" << endl;
+    peoples[index]->readPerson();
+    cout << "Person details updated successfully." << endl;
+}
+
+/**
+ * @brief Gets the current count of Person objects.
+ *
+ * @return The count of Person objects (integer).
+ */
+int Person::getPersonCount() {
+    return count;
 }

@@ -94,12 +94,45 @@ int Date::getYear() const {
  * Prompts the user to enter the day, month, and year, and stores them in the corresponding attributes.
  */
 void Date::readDate() {
-    cout << "Enter day: ";
-    cin >> this->day;
-    cout << "Enter month: ";
-    cin >> this->month;
-    cout << "Enter year: ";
-    cin >> this->year;
+    int day, month, year;
+    bool isTheDateValid = false;
+
+    do {
+        cout << "Please enter the day: ";
+        while (!(cin >> day)) {
+            cout << "Invalid input. Please enter a valid integer for the day: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        cout << "Please enter the month: ";
+        while (!(cin >> month)) {
+            cout << "Invalid input. Please enter a valid integer for the month: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpa o buffer de entrada
+
+        cout << "Please enter the year: ";
+        while (!(cin >> year)) {
+            cout << "Invalid input. Please enter a valid integer for the year: ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        this->day = day;
+        this->month = month;
+        this->year = year;
+
+        isTheDateValid = isValidDate();
+
+        if (!isTheDateValid) {
+            cout << "Invalid date, please try again." << endl;
+        }
+
+    } while (!isTheDateValid);
 }
 
 /**
@@ -120,7 +153,7 @@ void Date::writeDate() const {
  *
  * @return true if the date is valid, false otherwise.
  */
-bool Date::isValid() const {
+bool Date::isValidDate() const {
     if (this->year < 1 || this->month < 1 || this->month > 12 || this->day < 1 || this->day > 31) return false;
     const int daysPerMonth[] = {
         31,

@@ -26,7 +26,7 @@ public:
     void readDate();
     void writeDate() const;
 
-    [[nodiscard]] bool isValid() const;
+    [[nodiscard]] bool isValidDate() const;
     [[nodiscard]] bool isSameMonth(int m) const;
 };
 

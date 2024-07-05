@@ -15,19 +15,20 @@ class Teacher final : public Person{
 public:
     Teacher();
     Teacher(string name, int day, int month, int year, string title);
-
-    ~Teacher() override;
-
+    
     void setTitle(string title);
 
     string getTitle();
 
     void writeData() override;
     void readData() override;
+    int getCount() override;
 
-    static void registerTeacher(Teacher* Teachers[], int MAX_PEOPLE, Person* persons[]);
-    static int getTeacherCount();
+    static void registerTeacher(Teacher* teachers[], int MAX_PEOPLE, Person* persons[]);
     static void listAllTeachers(Teacher* teachers[]);
+    static void deleteTeacher(Teacher* teachers[]);
+    static void editTeacherAtUserInputPosition(Teacher* teachers[]);
+    static int getTeacherCount();
 };
 
 #endif //TEACHER_H

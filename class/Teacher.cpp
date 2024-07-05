@@ -3,7 +3,10 @@
 //
 
 #include "Teacher.h"
+
+#include <cstdbool>
 #include <iostream>
+#include <thread>
 
 using namespace std;
 
@@ -37,13 +40,6 @@ Teacher::Teacher(string name, const int day, const int month, const int year, st
 }
 
 /**
- * @brief Destructor that decrements the teacher count.
- */
-Teacher::~Teacher() {
-    --teacherCount;
-}
-
-/**
  * @brief Sets the title of the teacher.
  *
  * @param title The new title (string).
@@ -64,18 +60,53 @@ string Teacher::getTitle() {
 /**
  * @brief Reads the teacher's data from the console input.
  *
- * This includes the person's details and the title.
+ * This includes the person's details and the title. The title must be one of the
+ * following: "Specialist", "Master", or "Doctor". It cannot be empty.
  */
 void Teacher::readData() {
     readPerson();
 
-    cout << "Enter the title (Specialist, Master, Doctor): ";
     string title;
 
-    cin.ignore();  // Ignore the newline left by previous input
-    getline(cin, title);
+    bool continueLoop = true;
 
-    setTitle(title);
+
+    while (continueLoop) {
+        cout << "Enter the title (Specialist, Master, Doctor): ";
+
+        getline(cin, title);
+
+        title.erase(0, title.find_first_not_of(" \t"));
+        title.erase(title.find_last_not_of(" \t") + 1);
+
+        if (title.empty()) {
+            cout << "Title cannot be empty. Please enter a valid title." << endl;
+            continue;
+        }
+
+        string lowerTitle;
+        for(auto letter : title) lowerTitle += tolower(letter, locale());
+
+        if (lowerTitle == "specialist" || lowerTitle == "master" || lowerTitle == "doctor") {
+            title = lowerTitle;
+            title[0] = toupper(lowerTitle[0]);
+
+            setTitle(title);
+            continueLoop = false;
+        } else {
+            cout << "Invalid title. Please enter one of the following: Specialist, Master, Doctor." << endl;
+        }
+    }
+}
+
+
+/**
+ * @brief Gets the current count of Teacher objects.
+ *
+ * @return The count of Teacher objects (integer).
+ */
+int Teacher::getCount() {
+    return teacherCount;
 }
 
 /**
@@ -84,17 +115,7 @@ void Teacher::readData() {
  * This includes the person's details and the title.
  */
 void Teacher::writeData() {
-    writePerson();
     cout << "Title: " << title << endl;
-}
-
-/**
- * @brief Gets the current count of Teacher objects.
- *
- * @return The count of Teacher objects (integer).
- */
-int Teacher::getTeacherCount() {
-    return teacherCount;
 }
 
 /**
@@ -107,7 +128,7 @@ int Teacher::getTeacherCount() {
  * This function reads the teacher's data from input and registers the teacher if the maximum capacity is not reached.
  */
 void Teacher::registerTeacher(Teacher *teachers[], const int MAX_PEOPLE, Person *persons[]) {
-    if (getCount() > MAX_PEOPLE) {
+    if (getPersonCount() > MAX_PEOPLE) {
         cout << "Cannot register more people. Maximum capacity reached." << endl;
         return;
     }
@@ -115,7 +136,7 @@ void Teacher::registerTeacher(Teacher *teachers[], const int MAX_PEOPLE, Person 
     auto *teacher = new Teacher();
     teacher->readData();
     teachers[teacherCount - 1] = teacher;
-    persons[getCount() - 1] = teacher;
+    persons[getPersonCount() - 1] = teacher;
 }
 
 /**
@@ -134,6 +155,92 @@ void Teacher::listAllTeachers(Teacher *teachers[]) {
     cout << "List of registered teachers:" << endl;
     for (int i = 0; i < teacherCount; ++i) {
         cout << "Teacher " << i + 1 << ":" << endl;
-        teachers[i]->writeData();
+        teachers[i]->writePerson();
     }
 }
+
+/**
+ * @brief Deletes a teacher at a specified position.
+ *
+ * @param teachers An array of pointers to Student objects.
+ *
+ * This method deletes the person at the specified position and shifts the remaining elements.
+ */
+void Teacher::deleteTeacher(Teacher *teachers[]) {
+    if (teacherCount == 0) {
+        cout << "No teachers available to delete." << endl;
+        return;
+    }
+
+    int position;
+    bool continueLoop = true;
+
+    while (continueLoop) {
+        cout << "Enter the position of the person to delete (1 to " << teacherCount << "): ";
+        cin >> position;
+
+        if (cin.fail() || position < 1 || position > teacherCount) {
+            cout << "Invalid position. Please enter a number between 1 and " << teacherCount << "." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } else {
+            continueLoop = false;
+        }
+    }
+
+    const int index = position - 1;
+
+    delete teachers[index];
+
+    for (int i = index; i < teacherCount - 1; ++i) {
+        teachers[i] = teachers[i + 1];
+    }
+
+    teacherCount--;
+
+    teachers[teacherCount] = nullptr;
+    cout << "Teacher at position " << position << " deleted successfully." << endl;
+}
+
+/**
+ * @brief Edits the details of a `Teacher` object at a user-specified position.
+ *
+ * This method prompts the user to enter the position of the `Teacher` object to edit,
+ * validates the position, and then calls `readPerson` on the selected object to allow
+ * editing of its details.
+ *
+ * @param teachers An array of pointers to `Teacher` objects.
+ */
+void Teacher::editTeacherAtUserInputPosition(Teacher* teachers[]) {
+    if (teacherCount == 0) {
+        cout << "No teachers available to edit." << endl;
+        return;
+    }
+
+    int position;
+    bool continueLoop = true;
+
+    while (continueLoop) {
+        cout << "Enter the position of the teacher to edit (1 to " << teacherCount << "): ";
+        cin >> position;
+
+        if (cin.fail() || position < 1 || position > teacherCount) {
+            cout << "Invalid position. Please enter a number between 1 and " << teacherCount << "." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } else {
+            continueLoop = false;
+        }
+    }
+
+    const int index = position - 1;
+
+    cout << "Editing teacher at position " << position << ":" << endl;
+    teachers[index]->readData();
+    cout << "Teacher details updated successfully." << endl;
+}
+
+int Teacher::getTeacherCount() {
+   return teacherCount;
+}
+
