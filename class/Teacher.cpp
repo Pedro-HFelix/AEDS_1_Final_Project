@@ -245,3 +245,30 @@ void Teacher::editTeacherAtUserInputPosition(Teacher* teachers[]) {
 int Teacher::getTeacherCount() {
    return teacherCount;
 }
+
+/**
+ * @brief Shows the teachers with birthdays in the specified month.
+ *
+ * @param teachers An array of pointers to Teacher objects.
+ * @param month The month to check for birthdays (integer).
+ *
+ * This method prints the details of people who have birthdays in the specified month.
+ */
+void Teacher::showBirthdaysForMonth(Teacher* teachers[], const int month) {
+    bool found = false;
+
+    cout << "Teacher with birthdays in month " << month << ":" << endl;
+
+    for (int i = 0; i < teacherCount; ++i) {
+        if (teachers[i]->getBirthDate().isSameMonth(month)) {
+            cout << "Teacher " << i + 1 << ":" << endl;
+            teachers[i]->writePerson();
+            cout << "\n" << endl;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        cout << "No birthdays found in month " << month << "to teachers." << endl;
+    }
+}

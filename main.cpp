@@ -219,9 +219,9 @@ int main() {
                     cin >> month;
                     if (month >= 1 && month <= 12) {
                         cout << "Students: " << endl;
-                        Student::listAllStudents(students);
+                        Student::showBirthdaysForMonth(students, month);
                         cout << "Teachers: " << endl;
-                        Teacher::listAllTeachers(teachers);
+                        Teacher::showBirthdaysForMonth(teachers, month);
                     } else {
                         cout << "Invalid month. Please enter a number between 1 and 12." << endl;
                     }

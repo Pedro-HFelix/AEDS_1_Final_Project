@@ -18,8 +18,7 @@ class Student final : public Person{
 public:
     Student();
     Student(string name, int d, int m, int y, string enrolment);
-    Student(Student* student);
-    ~Student();
+    ~Student() override;
 
     void setEnrolment  (string enrolment);
 
@@ -35,6 +34,7 @@ public:
     static void deleteStudent(Student* students[]);
     static void editStudentAtUserInputPosition(Student* students[]);
     static int getStudentsCount();
+    static void showBirthdaysForMonth(Student* students[], int month);
 };
 
 

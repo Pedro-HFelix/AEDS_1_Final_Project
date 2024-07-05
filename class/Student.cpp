@@ -229,3 +229,29 @@ int Student::getStudentsCount() {
     return studentCount;
 }
 
+/**
+ * @brief Shows the students with birthdays in the specified month.
+ *
+ * @param students An array of pointers to Student objects.
+ * @param month The month to check for birthdays (integer).
+ *
+ * This method prints the details of people who have birthdays in the specified month.
+ */
+void Student::showBirthdaysForMonth(Student* students[], const int month) {
+    bool found = false;
+
+    cout << "Teacher with birthdays in month " << month << ":" << endl;
+
+    for (int i = 0; i < studentCount; ++i) {
+        if (students[i]->getBirthDate().isSameMonth(month)) {
+            cout << "student " << i + 1 << ":" << endl;
+            students[i]->writePerson();
+            cout << "\n" << endl;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        cout << "No birthdays found in month " << month << "to students." << endl;
+    }
+}
